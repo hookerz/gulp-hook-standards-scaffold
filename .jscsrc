@@ -34,7 +34,7 @@
 
   "disallowMultipleVarDecl": true,
 
-  "disallowSpacesInsideParentheses": true,
+  "disallowSpacesInsideParentheses": { "only": [ "{", "}" ] },
   "disallowEmptyBlocks": true,
 
   "requireParenthesesAroundIIFE": true,
@@ -46,7 +46,6 @@
     "beforeOpeningRoundBrace": true
   },
   "requireSpacesInAnonymousFunctionExpression": {
-    "beforeOpeningRoundBrace": true,
     "beforeOpeningCurlyBrace": true
   },
   "disallowSpacesInNamedFunctionExpression": {
@@ -90,12 +89,11 @@
     "value": 120,
     "allowUrlComments": true
   },
-  "requireSpaceAfterLineComment": true,
   "requireLineFeedAtFileEnd": true,
   "disallowMultipleLineBreaks": true,
   "disallowMixedSpacesAndTabs": true,
   "disallowTrailingWhitespace": true,
-  "validateIndentation": 4,
+  "validateIndentation": 2,
 
   "requireSemicolons": true
 }

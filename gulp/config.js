@@ -1,72 +1,81 @@
 'use strict';
 
-var args = require('yargs').argv;
-
-var production = args.prod ? true : false;
-var build = args._.length ? args._[0] === 'build' : false;
-var watch = args._.length ? args._[0] === 'watch' : true;
-var req = build ? ['clean'] : [];
-var dest = watch ? './.tmp' : './dist';
+var dest = './dist';
 
 var config = {
 
-	build : build,
+  flags: {
+    minify: false,
+    sourcemap: true
+  },
 
-	watch : watch,
+  clean: {
+    src: dest
+  },
 
-	req : req,
+  styles: {
+    src: './styles/**/*',
+    entry: './styles/index.styl',
+    dist: dest + '/css/'
+  },
 
-	production : production,
+  static: {
+    src: ['./static/**/*'],
+    dist: dest
+  },
 
-	clean: {
-		src: ['./.tmp', './dist']
-	},
+  images: {
+    src: ['./static/images/**/*.{gif,jpg,png,svg}'],
+    dist: dest + '/images/'
+  },
 
-	styles: {
-		watch: './styles/**/*',
-		entry: './styles/index.styl',
-		dist: dest + '/css/'
-	},
+  tests: {
+    lint: {
+      src: ['./app/**/*.js', '!app/vendor/**/*.js', './gulp/**/*.js', './tests/**/*.js']
+    },
+    mocha: {
+      src: ['./tests/**/*.js'],
+      config: {
+        ui: 'tdd',
+        reporter: 'spec'
+      }
+    }
+  },
 
-	static: {
-		src: ['./static/**/*'],
-		dist: dest
-	},
+  scripts: {
+    app: {
+      src: ['./app/**/*.js', '!./app/vendor/**/*.js'],
+      entry: './app/index.js'
+    },
+    bower: {
+      src: './bower.json'
+    },
+    vendor: {
+      src: './app/vendor/**/*.js'
+    },
+    dist: dest + '/js/'
+  },
 
-	images: {
-		src: ['./static/images/**/*.{gif,jpg,png,svg}'],
-		dist: dest + '/images/'
-	},
+  server: {
+    root: dest,
+    port: 8080
+  },
 
-	tests: {
-		src: ['./tests/**/*.js'],
-		mocha: {
-			config: {
-				ui: 'tdd',
-				reporter:'spec'
-			}
-		}
-	},
+  version: {
+    css: dest + '/css/*.css',
+    cssDist: dest + '/css/',
 
-	lint: {
-		src: ['./app/**/*.js', '!app/vendor/**/*.js', './tests/**/*.js']
-	},
+    html: dest + '/*.html',
+    htmlDist: dest + '/',
 
-	scripts: {
-		watch: './app/**/*.js',
-		entry: './app/index.js',
-		output: 'main.build.js',
-		dist: dest + '/js/',
-		vendor: './app/vendor/**/*.js'
-	},
+    js: dest + '/js/*.js',
+    jsDist: dest + '/js/',
 
-	server: {
-		root: './.tmp',
-		port: 8080,
-		livereload: true
-	},
+    jsMap: dest + '/js/*.map',
+    jsMapDist: dest + '/js/'
+  },
 
-	bower: './bower_components/'
+  bower: './bower_components/'
 
 };
 

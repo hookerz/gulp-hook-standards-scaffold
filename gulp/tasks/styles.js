@@ -1,47 +1,81 @@
+/**
+ * Merges all stylus and css files into one css file.
+ * @tasks/styles
+ */
+
 'use strict';
 
-var config = require('../config.js');
-
-var args = require('yargs').argv;
-var gulp = require('gulp');
-var changed = require('gulp-changed');
+var stylus = require( 'gulp-stylus' );
+var nib = require( 'nib' );
 var csso = require('gulp-csso');
-var stylus = require('gulp-stylus');
 var gutil = require('gulp-util');
-var sourcemaps = require('gulp-sourcemaps');
 
-var nib = require('nib');
+/**
+ * @param gulp - function
+ * @param bs - Browser sync instance
+ * @param options - object
+ * options.entry : Path to the entry stylus or css file.
+ * options.dist : Destination directory for file output.
+ * @param flags - object
+ * flags.minify : boolean
+ * flags.sourcemap : boolean
+ * @returns {Function}
+ *
+ * Note: if you pass flags.minify and flags.sourcemap both as true
+ * then line numbers from the orginal files are injected but no minification happens.
+ */
+module.exports = function( gulp, bs, options, flags ) {
 
-function buildStylus () {
+  return function() {
 
-	var task = gulp.src(config.styles.entry)
-		.pipe(changed(config.styles.dist))
-		.pipe(stylus({
-			'use': [nib()],
-			'include css': true,
-			sourcemap: {
-				inline: true
-			}
-		}))
-		.pipe(config.production ? csso() : gutil.noop())
-		.pipe(gulp.dest(config.styles.dist));
+    var settings;
 
-	return task;
+    if ( flags.sourcemap === true ) {
 
-}
+      if ( flags.minify === true ) {
 
-/*
-** config.req = build ? ['clean'] : [];
-** only run clean when building
-*/
+        // dev - concat CSS with sourcemap but do not minify
+        // as doing so breaks the sourcemaps
+        // a work around is to include line numbers back to the styl files
 
-gulp.task('stylus', config.req, function () {
+        settings = {
+          use: [nib()],
+          'include css': true,
+          linenos: true
+        };
 
-	return buildStylus();
+      } else {
 
-});
+        // local
 
-gulp.task('styles', ['stylus'], function () {
+        settings = {
+          use: [nib()],
+          'include css': true,
+          sourcemap: {
+            inline: true
+          }
+        };
 
+      }
 
-});
+    } else {
+
+      // prod minify with no sourcemap
+
+      settings = {
+        use: [nib()],
+        'include css': true
+      };
+
+    }
+
+    return gulp.src( options.entry )
+      .pipe(stylus(settings))
+      .pipe(flags.sourcemap ? gutil.noop() : csso())
+      .pipe(gulp.dest(options.dist))
+      .pipe(bs.stream());
+
+  };
+
+};
+
