@@ -48,8 +48,9 @@ gulp.task('watch', function(done) {
     }
   });
 
-  gulp.watch(config.scripts.app.src, gulp.series( 'scripts-app' ));
-  gulp.watch(config.scripts.vendor.src, gulp.series( 'scripts-vendor' ));
+  gulp.watch(config.scripts.app.src, gulp.series( 'tests', 'scripts-app' ));
+  gulp.watch(config.scripts.vendor.src, gulp.series( 'tests', 'scripts-vendor' ));
+  gulp.watch(config.scripts.tests.src, gulp.series( 'tests' ));
 
   gulp.watch(config.styles.src, gulp.series( 'styles' ));
   gulp.watch(config.static.src, gulp.series( 'static' ));

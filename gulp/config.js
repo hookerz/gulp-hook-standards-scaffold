@@ -50,6 +50,9 @@ var config = {
     vendor: {
       src: './app/vendor/**/*.js'
     },
+    tests: {
+      src: './tests/**/*.js'
+    },
     dist: dest + '/js/'
   },
 
