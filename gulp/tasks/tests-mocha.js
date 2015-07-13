@@ -19,7 +19,10 @@ module.exports = function( gulp, options ) {
   return function() {
 
     return gulp.src( options.src )
-      .pipe(mocha( options.config ));
+      .pipe(mocha( options.config ))
+      .on('error', function(error) {
+        console.log(error.message);
+      });
 
   };
 
