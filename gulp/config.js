@@ -44,7 +44,7 @@ var config = {
 
   scripts: {
     app: {
-      src: ['./app/**/*.js', '!./app/vendor/**/*.js', './app/templates/**/*.hbs'],
+      src: ['./app/**/*.js', '!./app/vendor/**/*.js'],
       entry: './app/index.js'
     },
     vendor: {
