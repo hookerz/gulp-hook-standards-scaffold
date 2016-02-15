@@ -7,6 +7,8 @@ var Collapse = require('./Collapse');
 var CreateJSLoader = require('./utils/CreateJSLoader')
 var CreateJSCanvas = require('./utils/CreateJSCanvas');
 
+var AdKit = require('./utils/AdKit');
+
 function Main(){
   console.log('Main: instance');
 
@@ -17,9 +19,12 @@ function Main(){
 
   var expand = null;
   var collapse = null;
+  var loadCount = 0;
+
+  window.adKit = new AdKit();
 
   this.init = function() {
-
+    console.log('Main: init');
     cjsLoader.load("expand", this.expandLoadComplete);
     cjsLoader.load("collapse", this.collapseLoadComplete);
 
@@ -37,13 +42,22 @@ function Main(){
 
   this.animationsLoaded = function(){
     if(collapseAnimation && expandAnimation) {
+      expand = new CreateJSCanvas(expandAnimation, this.stageLoaded);
+      collapse = new CreateJSCanvas(collapseAnimation, this.stageLoaded);
+    }
+  }.bind(this);
+
+  this.stageLoaded = function(){
+    console.log('Main: stageLoaded');
+    loadCount++;
+    if(loadCount == 2){
       this.onAdLoaded();
     }
   }.bind(this);
 
   this.onAdLoaded = function() {
-    console.log('index: onAdLoaded');
-    //this.stage = new CreateJSCanvas(gameAnimation, this.onStageLoaded);
+    console.log('Main: onAdLoaded');
+    
 
   }.bind(this);
 

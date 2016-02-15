@@ -1,19 +1,23 @@
-function CreateJSCanvas(animation, callback, tickHandler) {
+function CreateJSCanvas(animation, callback, transparent, target, tickHandler) {
   console.log('CreateJSCanvas: instance');
   this.canvas;
+  this.target = target;
   this.stage;
   this.exportRoot;
   this.loadError;
+  this.transparent = transparent;
   this.onTick = tickHandler;
   this.onLoaded = callback;
 
-  var lib = lib;
-  var images = images || {};
-  var ss = ss || {};
+  var options = options;
+
+  var lib;
+  //var images;
+  var ss;
 
   if(animation) {
     lib = animation.lib;
-    images = animation.img;
+    //images = animation.img;
     ss = animation.ss;
   }
 
@@ -25,24 +29,34 @@ function CreateJSCanvas(animation, callback, tickHandler) {
     this.canvas.setAttribute('id', 'canvas');
     this.canvas.setAttribute('width', lib.properties.width);
     this.canvas.setAttribute('height', lib.properties.height);
-    this.canvas.setAttribute('style', 'style="background-color:"' + lib.properties.color);
+    if(!transparent) {
+      this.canvas.setAttribute('style', 'style="background-color:"' + lib.properties.color);
+    }
 
     var loader = new createjs.LoadQueue(false);
     loader.addEventListener('fileload', this.handleFileLoad);
     loader.addEventListener('complete', this.handleComplete);
 
     if (lib.properties.manifest.length == 0) {
-      loader.loadFile({src: 'images/index_atlas_.json', type: 'spritesheet', id: 'index_atlas_'}, true);
+      try {
+        console.log('CreateJSCanvas: Loading spritesheet.');
+        loader.loadFile({src: 'images/index_atlas_.json', type: 'spritesheet', id: 'index_atlas_'}, true);
+      } catch(e) {
+        console.log('CreateJSCanvas: No images found.');
+        handleComplete(null);
+      }
       //handleComplete(null);
     } else {
+      console.log('CreateJSCanvas: Loading images.');
       loader.loadManifest(lib.properties.manifest);
     }
   }.bind(this);
 
   this.handleFileLoad = function(evt) {
-    console.log('CreateJSCanvas: handleFileLoad()');
+    console.log('CreateJSCanvas: handleFileLoad()',evt.item.id);
     if (evt.item.type == 'image') {
       images[evt.item.id] = evt.result;
+      //window.img[evt.item.id] = evt.result;
     }
   }.bind(this);
 
@@ -52,13 +66,20 @@ function CreateJSCanvas(animation, callback, tickHandler) {
 
   this.handleComplete = function (evt) {
     console.log('CreateJSCanvas: handleComplete()');
-    console.log(lib);
+    console.log(images);
+    images = {};
     var queue = evt.target;
     ss['index_atlas_'] = queue.getResult('index_atlas_');
 
     this.exportRoot = new lib.index();
 
-    document.body.appendChild(this.canvas);
+    window.exportRoot = this.exportRoot;
+
+    if(this.target) {
+      this.target.appendChild(this.canvas);
+    } else {
+      document.body.appendChild(this.canvas);
+    }
 
     devicePixelRatio = window.devicePixelRatio || 1;
 
@@ -74,9 +95,9 @@ function CreateJSCanvas(animation, callback, tickHandler) {
     this.stage.addChild(this.exportRoot);
     this.stage.enableMouseOver(24);
     createjs.Touch.enable(this.stage);
+    this.stage.root = this.stage.children[0];
+    this.onLoaded(this.stage.root);
     this.stage.update();
-
-    this.onLoaded(this.stage);
 
     createjs.Ticker.setFPS(lib.properties.fps);
     //createjs.Ticker.setFPS(60);
