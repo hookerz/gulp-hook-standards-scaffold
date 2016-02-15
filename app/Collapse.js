@@ -1,9 +1,10 @@
-function Collapse(){
+function Collapse(context){
   console.log('Collapse: instance');
-  var context = null;
+  this.context = context;
+  var context = context;
 
   this.init = function(thisContext) {
-    console.log('Ad: init');
+    console.log('Collapse: init');
     context = thisContext;
 
     this.createButton(context.catchAll, context.exit);
@@ -11,7 +12,7 @@ function Collapse(){
   }.bind(this);
 
   this.exit = function() {
-    console.log('Ad: exit');
+    console.log('Collapse: exit');
     Enabler.exit('catch_all');
   }.bind(this);
 

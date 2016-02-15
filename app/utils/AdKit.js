@@ -52,12 +52,12 @@ function AdKit(stage){
 
 	this.clickCatchAll = function (e) {
 		console.log("AdKit: catch all");
-
+		/**/
 		if (this.allowClick(e)) {
 			if(this.adType == this.kits.doubleclick){
 				console.log("AdKit: DC catch all");
 				Enabler.exit("catch_all", 'https://www.youtube.com/user/NBCNews');
-				window.exportRoot._main.gotoAndPlay('endCard');
+				//window.exportRoot._main.gotoAndPlay('endCard');
 				
 			}
 			if(this.adType == this.kits.flashtalking){
@@ -74,12 +74,12 @@ function AdKit(stage){
 				else window.open(window.clickTag);
 			}
 		}
-
+		/**/
 	}.bind(this);
 		
 	this.clickCTA = function (e) {
-		console.log("AdKit: cta")
-
+		 console.log("AdKit: ctaaaa", this.allowClick(e));
+		
 		if (this.allowClick(e)) {
 			if(this.adType == this.kits.doubleclick){
 				console.log("AdKit: DC cta");
@@ -99,6 +99,7 @@ function AdKit(stage){
 				if(this.clickTag) window.open(this.clickTag);
 				else window.open(window.clickTag);
 			}
+		
 		}
 	}.bind(this);
 
@@ -122,6 +123,25 @@ function AdKit(stage){
 			hitArea.graphics.beginFill("#000").drawRect(h.x, h.y, h.width, h.height);
 			clip.hitArea = hitArea;
 		}	
+	}.bind(this);
+
+
+	this.replay = function(){
+/*
+		if(this.adType == this.kits.doubleclick){
+				console.log("AdKit: DC Replay Event");
+				Enabler.counter("replay");
+		}
+		createjs.Ticker.removeEventListener("tick", stage);
+
+		stage.removeChild(exportRoot);
+		exportRoot = new lib.index();
+
+		stage.addChild(exportRoot);
+		stage.update();
+
+		createjs.Ticker.addEventListener("tick", stage);
+		*/
 	}.bind(this);
 
 	this.setup = function(){

@@ -1,6 +1,7 @@
-function Expand(){
+function Expand(context){
   console.log('Expand: instance');
-  var context = null;
+  this.context = context;
+  var context = context;
 
   this.init = function(thisContext) {
     console.log('Expand: init');

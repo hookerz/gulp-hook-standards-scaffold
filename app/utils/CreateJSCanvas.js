@@ -1,15 +1,22 @@
-function CreateJSCanvas(animation, callback, transparent, target, tickHandler) {
+function CreateJSCanvas(animation, callback, options) {
   console.log('CreateJSCanvas: instance');
   this.canvas;
-  this.target = target;
   this.stage;
   this.exportRoot;
   this.loadError;
-  this.transparent = transparent;
-  this.onTick = tickHandler;
-  this.onLoaded = callback;
 
-  var options = options;
+  var defaults = {
+    target: null,
+    transparent: false,
+    onTick: null
+  }
+
+  var options = mergeOptions(defaults, options);
+
+  this.target = options.target;
+  this.transparent = options.transparent;
+  this.onTick = options.onTick;
+  this.onLoaded = callback;
 
   var lib;
   //var images;
@@ -29,7 +36,7 @@ function CreateJSCanvas(animation, callback, transparent, target, tickHandler) {
     this.canvas.setAttribute('id', 'canvas');
     this.canvas.setAttribute('width', lib.properties.width);
     this.canvas.setAttribute('height', lib.properties.height);
-    if(!transparent) {
+    if(!this.transparent) {
       this.canvas.setAttribute('style', 'style="background-color:"' + lib.properties.color);
     }
 
@@ -107,6 +114,13 @@ function CreateJSCanvas(animation, callback, transparent, target, tickHandler) {
     createjs.Ticker.addEventListener('tick', this.stage);
 
   }.bind(this);
+
+  function mergeOptions(obj1,obj2){
+    var obj3 = {};
+    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    return obj3;
+  }
 
   this.init();
 }

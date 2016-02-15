@@ -298,8 +298,8 @@ p.nominalBounds = new cjs.Rectangle(-11.8,-2.6,25,25);
 		
 		/* catchall code */
 		if(this.catchall){
-			this.catchall.addEventListener("click", adKit.catchAllClick);
-			//adKit.createButton(this.catchall);
+			this.catchall.addEventListener("click", adKit.clickCatchAll);
+			adKit.createButton(this.catchall);
 		}
 		/**/
 		
@@ -308,21 +308,18 @@ p.nominalBounds = new cjs.Rectangle(-11.8,-2.6,25,25);
 			this.replay.addEventListener("click", adKit.replay);
 			this.replay.addEventListener("mouseover", this.buttonOver);	
 			this.replay.addEventListener("mouseout", this.buttonOut);
-			//adKit.createButton(this.replay);
+			adKit.createButton(this.replay);
 		}
 		/**/
 		
 		/* cta code */
 		if(this.cta){
-			this.cta.addEventListener("click", adKit.ctaClick);
+			this.cta.addEventListener("click", adKit.clickCTA);
 			this.cta.addEventListener("click", this.buttonOut);
 			this.cta.addEventListener("mouseover", this.buttonOver);
 			this.cta.addEventListener("mouseout", this.buttonOut);
 			adKit.createButton(this.cta);
 		}
-		
-		console.log(cjs);
-		
 		/**/
 	}
 	this.frame_40 = function() {
