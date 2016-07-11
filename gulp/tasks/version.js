@@ -72,7 +72,7 @@ module.exports = function( gulp, options ) {
     var version;
 
     if ( !args.version ) {
-      version = date.getUTCMonth() + '/'+date.getUTCDate()+'/'+date.getUTCFullYear()+' - '+date.getUTCHours()+':'+date.getUTCMinutes()+':'+date.getUTCSeconds();
+      version = date.toISOString();
     } else {
       version = args.version.toString().replace( /[^\w.-]+/g, '' );
     }
