@@ -72,7 +72,7 @@ module.exports = function( gulp, options ) {
     var version;
 
     if ( !args.version ) {
-      version = date.getTime();
+      version = date.toISOString();
     } else {
       version = args.version.toString().replace( /[^\w.-]+/g, '' );
     }

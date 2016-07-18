@@ -4,11 +4,7 @@ This scaffold has two global dependencies: Node and Gulp. To install Node, find 
 
 * [Node](https://nodejs.org/)
 
-To install Gulp 4, run:
-
-    npm run gulp4
-
-Finally, to install local project dependencies, run:
+To install local project dependencies, run:
 
     npm install
 
